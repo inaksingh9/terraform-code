@@ -1,4 +1,4 @@
-resourcegroup = {
+rgs = {
   rg1 = {
     name     = "rg-amit1"
     location = "East US"
@@ -13,3 +13,4 @@ resourcegroup = {
     location = "Central US"
   }
 }
+

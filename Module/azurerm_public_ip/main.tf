@@ -1,10 +1,8 @@
-resource "azurerm_public_ip" "example" {
-  name                = "acceptanceTestPublicIp1"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
+resource "azurerm_public_ip" "pipamit1" {
+  for_each = var.pip
+  name                = each.value.name
+  resource_group_name = each.value.resource_group_name
+  location            = each.value.location
   allocation_method   = "Static"
 
-  tags = {
-    environment = "Production"
-  }
 }
