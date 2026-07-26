@@ -39,3 +39,26 @@ module "virtual_machine" {
   nics       = var.nics
   depends_on = [module.subnet, module.public_ip]
 }
+
+module "bastion" {
+  source     = "../../Module/azurerm_bastion_host"
+  bastions   = var.bastions
+  depends_on = [module.subnet, module.public_ip]
+}
+
+module "load_balancer" {
+  source     = "../../Module/azurerm_lb"
+  lbs        = var.lbs
+  depends_on = [module.subnet, module.public_ip]
+}
+
+# module "application_gateway" {
+#   source     = "../../Module/azurerm_application_gateway"
+#   appgws     = var.appgws
+#   depends_on = [module.subnet, module.public_ip]
+# }
+#
+# module "front_door" {
+#   source     = "../../Module/azurerm_frontdoor"
+#   frontdoors = var.frontdoors
+# }

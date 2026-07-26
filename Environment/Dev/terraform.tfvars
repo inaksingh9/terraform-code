@@ -14,15 +14,22 @@ rgs = {
 }
 
 pip = {
-  pip1 = {
-    name                = "pipamit1-dev"
+  # pip1 = {
+  #   name                = "pipamit1-dev"
+  #   resource_group_name = "rg-amit1-dev"
+  #   location            = "Central India"
+  # }
+  pip_bastion = {
+    name                = "pip-bastion-dev"
     resource_group_name = "rg-amit1-dev"
     location            = "Central India"
+    sku                 = "Standard"
   }
-  pip2 = {
-    name                = "pipamit2-dev"
-    resource_group_name = "rg-amit2-dev"
+  pip_lb = {
+    name                = "pip-lb-dev"
+    resource_group_name = "rg-amit1-dev"
     location            = "Central India"
+    sku                 = "Standard"
   }
 
 }
@@ -79,6 +86,12 @@ subnets = {
     virtual_network_name = "vnetamit1-dev"
     address_prefixes     = ["10.124.0.0/26"]
   }
+  bastion_subnet = {
+    name                 = "AzureBastionSubnet"
+    resource_group_name  = "rg-amit1-dev"
+    virtual_network_name = "vnetamit1-dev"
+    address_prefixes     = ["10.124.0.64/26"]
+  }
   subnet2 = {
     name                 = "subnetamit2-dev"
     resource_group_name  = "rg-amit2-dev"
@@ -113,50 +126,102 @@ nsg = {
 
 vms = {
   vm1 = {
-    nic_name             = "frontend-nic-dev"
-    location             = "Central India"
-    resource_group_name  = "rg-amit1-dev"
-    pip_name             = "pipamit1-dev"
+    nic_name            = "frontend-nic-dev"
+    location            = "Central India"
+    resource_group_name = "rg-amit1-dev"
+    # pip_name             = "pipamit1-dev"
     snet_name            = "subnetamit1-dev"
     virtual_network_name = "vnetamit1-dev"
     vm_name              = "frontend-vm-dev"
     size                 = "Standard_D2s_v3"
-    keyvault_name        = "kv-amit-vault-dev"
-    keyvault_rg          = "rg-amit1-dev"
+    keyvault_name        = "kv-amit-vault"
+    keyvault_rg          = "rg-amit1"
     username_secret_name = "adminusername"
     password_secret_name = "adminpassword"
   }
-  vm2 = {
-    nic_name             = "backend-nic-dev"
-    location             = "Central India"
-    resource_group_name  = "rg-amit2-dev"
-    pip_name             = "pipamit2-dev"
-    snet_name            = "subnetamit2-dev"
-    virtual_network_name = "vnetamit2-dev"
-    vm_name              = "backend-vm-dev"
-    size                 = "Standard_D2s_v3"
-    keyvault_name        = "kv-amit-vault-dev"
-    keyvault_rg          = "rg-amit1-dev"
-    username_secret_name = "adminusername"
-    password_secret_name = "adminpassword"
-  }
+  # vm2 = {
+  #   nic_name             = "backend-nic-dev"
+  #   location             = "Central India"
+  #   resource_group_name  = "rg-amit2-dev"
+  #   # pip_name             = "pipamit2-dev"
+  #   snet_name            = "subnetamit2-dev"
+  #   virtual_network_name = "vnetamit2-dev"
+  #   vm_name              = "backend-vm-dev"
+  #   size                 = "Standard_D2s_v3"
+  #   keyvault_name        = "kv-amit-vault"
+  #   keyvault_rg          = "rg-amit1"
+  #   username_secret_name = "adminusername"
+  #   password_secret_name = "adminpassword"
+  # }
 }
 
 nics = {
   vm1 = {
-    nic_name             = "frontend-nic-dev"
-    location             = "Central India"
-    resource_group_name  = "rg-amit1-dev"
-    pip_name             = "pipamit1-dev"
+    nic_name            = "frontend-nic-dev"
+    location            = "Central India"
+    resource_group_name = "rg-amit1-dev"
+    # pip_name             = "pipamit1-dev"
     snet_name            = "subnetamit1-dev"
     virtual_network_name = "vnetamit1-dev"
   }
-  vm2 = {
-    nic_name             = "backend-nic-dev"
+  # vm2 = {
+  #   nic_name             = "backend-nic-dev"
+  #   location             = "Central India"
+  #   resource_group_name  = "rg-amit2-dev"
+  #   # pip_name             = "pipamit2-dev"
+  #   snet_name            = "subnetamit2-dev"
+  #   virtual_network_name = "vnetamit2-dev"
+  # }
+}
+
+bastions = {
+  bastion1 = {
+    name                 = "bastion-dev"
+    resource_group_name  = "rg-amit1-dev"
     location             = "Central India"
-    resource_group_name  = "rg-amit2-dev"
-    pip_name             = "pipamit2-dev"
-    snet_name            = "subnetamit2-dev"
-    virtual_network_name = "vnetamit2-dev"
+    snet_name            = "AzureBastionSubnet"
+    virtual_network_name = "vnetamit1-dev"
+    pip_name             = "pip-bastion-dev"
   }
 }
+
+lbs = {
+  lb1 = {
+    name                = "lb-dev"
+    resource_group_name = "rg-amit1-dev"
+    location            = "Central India"
+    pip_name            = "pip-lb-dev"
+    backend_pool_name   = "lbbp-dev"
+    probe_name          = "lbprobe-dev"
+    probe_port          = 80
+    probe_protocol      = "Http"
+    probe_request_path  = "/"
+    rule_name           = "lbrule-dev"
+    rule_port           = 80
+    backend_port        = 80
+    associated_nics = [
+      { nic_name = "frontend-nic-dev", resource_group_name = "rg-amit1-dev" }
+    ]
+  }
+}
+
+# appgws = {
+#   appgw1 = {
+#     name                 = "appgw-dev"
+#     resource_group_name  = "rg-amit1-dev"
+#     location             = "Central India"
+#     snet_name            = "AppGatewaySubnet"
+#     virtual_network_name = "vnetamit1-dev"
+#     pip_name             = "pip-appgw-dev"
+#   }
+# }
+#
+# frontdoors = {
+#   fd1 = {
+#     name                = "frontdoor-dev"
+#     resource_group_name = "rg-amit1-dev"
+#     endpoint_name       = "endpoint-dev"
+#     backend_host_name   = "frontend-vm-dev.azurewebsites.net"
+#   }
+# }
+
