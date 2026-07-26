@@ -1,3 +1,1 @@
-variable "subnets" {
-  
-}
+variable "subnets" {}

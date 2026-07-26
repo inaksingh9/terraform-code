@@ -1,3 +1,1 @@
-variable "vnets" {
-  
-}
+variable "vnets" {}
