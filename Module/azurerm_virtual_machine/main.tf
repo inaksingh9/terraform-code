@@ -39,7 +39,7 @@ resource "azurerm_network_interface" "nics" {
   ip_configuration {
     name                          = "nic-amit"
     subnet_id                     = data.azurerm_subnet.snets[each.key].id
-    public_ip_address_id          = data.azurerm_public_ip.pips[each.key].id
+    # public_ip_address_id          = data.azurerm_public_ip.pips[each.key].id
     private_ip_address_allocation = "Dynamic"
   }
 }

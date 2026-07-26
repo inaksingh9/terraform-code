@@ -12,7 +12,7 @@ crash.log
 crash.*.log
 
 # Exclude any terraform.tfvars files, which can contain sensitive data (e.g. passwords, API keys)
-*.tfvars
+# *.tfvars
 *.tfvars.json
 
 # Ignore override files as they are usually used for local development overrides
